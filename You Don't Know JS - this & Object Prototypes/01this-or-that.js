@@ -1,6 +1,6 @@
 /** customize log function to print message into console */
 function myprint(message) {
- if (this && this.process && this.process['argv0'] && this.process['argv0'].includes('node')) {
+  if (this && this.process && this.process['argv0'] && this.process['argv0'].includes('node')) {
     // nodejs: /usr/local/bin/node
     console.log(message);
   } else {

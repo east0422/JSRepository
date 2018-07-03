@@ -1,0 +1,19 @@
+{
+  "name": "test-mysql",
+  "version": "1.0.0",
+  "description": "study nodejs mysql",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mysql"
+  ],
+  "author": "east",
+  "license": "ISC",
+  "dependencies": {
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.38.0"
+  }
+}
