@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Shopping List</title>
+  <link rel="stylesheet" type="text/css" href="../libcss/common.css">
+  <script type="text/javascript">
+    function onAdd() {
+      var $ul, li, $li, $label, $div, value
+      value = $('.js-new-item').val()
+      //validate against empty values
+      if (value === '') {
+        return
+      }
+      $ul = $('ul')
+      $li = $('<li>').appendTo($ul)
+      $div = $('<div>').addClass('checkbox').appendTo($li)
+      $label = $('<label>').appendTo($div)
+      $input =  $('<input>').attr('type', 'checkbox').addClass('item')
+        .attr('name', 'list')
+        .click(toggleRemoved)
+        .appendTo($label)
+      $label.append(value)
+      $('.js-new-item').val('')
+    }
+    function toggleRemoved() {
+      // event.target 返回哪个DOM元素触发了事件
+      $(event.target).closest('li').toggleClass('removed')
+    }
+    function onChangeTitle() {
+      document.getElementById('title').innerText = document.getElementById('js-change-title').value
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h2 id="title">My Shopping List</h2>
+    <div class="input-group">
+      <input placeholder="add shopping list item" type="text" class="js-new-item form-control"/>
+        <span class="input-group-btn">
+          <button onclick="onAdd()" class="js-add btn btn-default" type="button">Add!</button>
+        </span>
+    </div>
+    <ul>
+      <li>
+        <div class="checkbox">
+          <label><input onclick="toggleRemoved()" name="list" type="checkbox"/> Carrot</label>
+        </div>
+      </li>
+      <li>
+        <div class="checkbox">
+          <label><input onclick="toggleRemoved()" name="list" type="checkbox"/> Book</label>
+        </div>
+      </li>
+      <li class="removed">
+        <div class="checkbox">
+          <label><input onclick="toggleRemoved()" name="list" type="checkbox" checked /> Gift for aunt's birthday </label>
+        </div>
+      </li>
+    </ul>
+    <div class="footer">
+      <hr/><em>Change the title of your shopping list here</em>
+      <input onkeyup="onChangeTitle()" id="js-change-title" type="text" value="My Shopping List"/>
+    </div>
+  </div>
+  <script type="text/javascript" src="../libjs/jquery2.2.4.js"></script>
+</body>
+
+</html>
