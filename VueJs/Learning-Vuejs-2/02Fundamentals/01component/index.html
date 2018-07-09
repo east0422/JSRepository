@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Shopping List</title>
+  <style>
+    .container {
+      width: 40%;
+      margin: 20px auto 0px auto;
+    }
+    .removed label {
+      text-decoration: line-through;
+    }
+    ul li {
+      list-style-type: none;
+    }
+    ul li span {
+      margin-left: 5px;
+    }
+    .footer {
+      font-size: 0.7em;
+      margin-top: 20vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="container">
+    <h2>{{ title }}</h2>
+    <add-item-component></add-item-component>
+    <items-component></items-component>
+    <footer-component></footer-component>
+  </div>
+  <script src="../libjs/vue2.0.3.js" type="text/javascript"></script>
+  <script src="index.js" type="text/javascript"></script>
+</body>
+
+</html>
