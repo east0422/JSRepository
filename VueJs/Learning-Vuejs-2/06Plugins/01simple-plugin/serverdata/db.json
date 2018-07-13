@@ -1,0 +1,50 @@
+{
+  "shoppinglists": [
+    {
+      "id": "groceries",
+      "title": "Groceries",
+      "items": [
+        {
+          "text": "Bananas",
+          "checked": true
+        },
+        {
+          "text": "Apples",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "id": "clothes",
+      "title": "Clothes",
+      "items": [
+        {
+          "text": "black dress",
+          "checked": false
+        },
+        {
+          "text": "all stars",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "title": "fruit",
+      "items": [
+        {
+          "text": "dada",
+          "checked": true
+        },
+        {
+          "text": "apple",
+          "checked": false
+        },
+        {
+          "text": "banana",
+          "checked": false
+        }
+      ],
+      "id": "sl2TxDq"
+    }
+  ]
+}
