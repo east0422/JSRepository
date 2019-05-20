@@ -4,7 +4,8 @@
 `npm install -g vue-cli`
 
 ### Create a new project with the biolerplate
-`vue init webpack/webpack-simple/browserify/browserify-simple/simple projectname`
+`1. vue init webpack/webpack-simple/browserify/browserify-simple/simple projectname`
+`2. vue init (mpvue/mpvue-quickstart) projectname`
 
 ### Run
 `follow README.md in project`
