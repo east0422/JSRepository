@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>伊世缘</title>
+
+  <link href="./layui/css/layui.css" rel="stylesheet">
+  <script src="./layui/layui.js" type="text/javascript"></script>
+  <script src="./js/jquery.min.js" type="text/javascript"></script>
+  <!-- 地区 -->
+  <script src="./js/area.js" type="text/javascript"></script>
+  <script src="./js/select.js" type="text/javascript"></script>
+
+  <!-- 自定义下拉选择框模版 -->
+  <script id="selectoptions" type="text/html">
+    <select name="{{d.name}}" lay-verify="required">
+    {{# layui.each(d.list, function(index, item){ }}
+      <option value="{{ item }}">
+        {{ item + d.suffix}} 
+      </option>
+    {{# }); }}
+    </select>
+  </script>
+</head>
+<body>
+	
+<form class="layui-form layui-form-pane" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-block">
+      <input type="text" name="phone" id="phone" required lay-verify="required|phone" lay-reqtext="请输入11位正确手机号" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">验证码</label>
+    <div class="layui-input-inline">
+      <input type="text" name="verifycode" required lay-verify="required|number" placeholder="请输入手机验证码" autocomplete="off" class="layui-input">
+    </div>
+    <button class="layui-btn layui-btn-radius"  id="getverifycode">获取验证码</button>
+  </div>
+  <div class="layui-form-item" pane>
+    <label class="layui-form-label">性别</label>
+    <div class="layui-input-block">
+      <input type="radio" name="sex" value="男" title="男" checked>
+      <input type="radio" name="sex" value="女" title="女">
+    </div>
+  </div>
+  <div class="layui-form-item" pane>
+    <label class="layui-form-label">婚姻</label>
+    <div class="layui-input-block">
+      <input type="radio" name="marry" value="1" title="未婚" checked>
+      <input type="radio" name="marry" value="2" title="已婚">
+      <input type="radio" name="marry" value="3" title="离异">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">出生日期</label>
+    <div class="layui-input-block">
+      <input type="text" name="birthday" id="birthday" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">身高</label>
+    <div class="layui-input-block" id="heightoptions"></div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">学历</label>
+    <div class="layui-input-block">
+      <select name="education" lay-verify="required">
+        <option value="1">小学</option>
+        <option value="2">初中</option>
+        <option value="3">高中</option>
+        <option value="4">中专</option>
+        <option value="5">大专</option>
+        <option value="6">本科</option>
+        <option value="7">研究生</option>
+        <option value="8">博士</option>
+        <option value="9">保密</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">月收入</label>
+    <div class="layui-input-block">
+      <select name="salary" lay-verify="required">
+        <option value="1">0~5000</option>
+        <option value="2">5000~10000</option>
+        <option value="3">10000～20000</option>
+        <option value="4">20000～50000</option>
+        <option value="5">50000～100000</option>
+        <option value="6">100000以上</option>
+        <option value="7">保密</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">工作年限</label>
+    <div class="layui-input-block" id="workyearoptions">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">地区</label>
+      <div class="layui-inline">
+        <select name="province" id="province" lay-search lay-filter="province">
+          <option value="">省份</option>
+        </select>
+      </div>
+      <div class="layui-inline">
+        <select name="city" id="city" lay-search lay-filter="city">
+          <option value="">地级市</option>
+        </select>
+      </div>
+      <div class="layui-inline">
+        <select name="district" id="district" lay-search>
+          <option value="">县/区</option>
+        </select>
+      </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">详细住址</label>
+    <div class="layui-input-block">
+      <input type="text" name="address" required lay-verify="required" placeholder="请输入详细住址" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn layui-btn-primary" lay-submit lay-filter="register">信息登记</button>
+    </div>
+  </div>
+</form>
+
+<script>
+  layui.use(['form','laydate','laytpl', 'jquery'], function(){
+    var form = layui.form
+    ,laydate = layui.laydate
+    ,laytpl = layui.laytpl
+    ,$ = layui.jquery;
+
+    //日期
+    laydate.render({
+      elem: '#birthday'
+    });
+  
+    // 使用自定义下拉框模块填充数据
+    var getTpl = selectoptions.innerHTML;
+
+    // 身高下拉框
+    var heightList = [];
+    for (var i = 140; i <= 190; i++) {
+      heightList.push(i);
+    }
+    var heightoptionsData = {
+      'name': 'height',
+      'suffix': 'cm',
+      'list': heightList
+    };
+    var heightoptionsView = $('#heightoptions')[0];
+    laytpl(getTpl).render(heightoptionsData, function(html){
+      heightoptionsView.innerHTML = html;
+    });
+
+    // 工作年限下拉框
+    var workyearsList = [];
+    for (var i = 1; i <= 30; i++) {
+      workyearsList.push(i);
+    }
+    var workyearsData = {
+      'name': 'workyears',
+      'suffix': '年',
+      'list': workyearsList
+    };
+    var workyearoptionsView = $('#workyearoptions')[0]
+    laytpl(getTpl).render(workyearsData, function(html){
+      workyearoptionsView.innerHTML = html;
+    });
+
+    // 填充数据后重新渲染
+    form.render();
+
+    // 监听获取验证码按钮点击事件
+    $('#getverifycode').click(function(){
+      if ($('#phone').val() != '') {
+        console.log('获取验证码', $('#phone').val());
+      }
+      return false;
+    });
+
+    // 监听提交
+    form.on('submit(register)', function(data){
+      console.log('data:', data.field);
+      return false;
+    });
+  });
+</script>
+
+</body>
+</html>
