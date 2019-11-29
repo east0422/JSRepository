@@ -8,9 +8,11 @@
   <link href="./layui/css/layui.css" rel="stylesheet">
   <script src="./layui/layui.js" type="text/javascript"></script>
   <script src="./js/jquery.min.js" type="text/javascript"></script>
-  <!-- 地区 -->
+  <!-- 地区，依赖jquery，在jquery后加载 -->
   <script src="./js/area.js" type="text/javascript"></script>
   <script src="./js/select.js" type="text/javascript"></script>
+  <!-- api请求，依赖jquery，在jquery后加载 -->
+  <script src="./js/api.js" type="text/javascript"></script>
   <!-- 自定义下拉选择框模版 -->
   <script id="selectoptions" type="text/html">
     <select name="{{d.name}}" lay-verify="required">
@@ -32,23 +34,8 @@
       <div class="layui-form-item">
         <label class="layui-form-label">姓名</label>
         <div class="layui-input-block">
-          <input type="text" name="name" id="name" required lay-verify="required|phone" lay-reqtext="请输入姓名" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+          <input type="text" name="name" id="name" required lay-verify="required" lay-reqtext="请输入姓名" placeholder="请输入姓名" autocomplete="off" class="layui-input">
         </div>
-      </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">手机号</label>
-        <div class="layui-input-block">
-          <input type="text" name="phone" id="phone" required lay-verify="required|phone" lay-reqtext="请输入11位正确手机号" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-        </div>
-      </div>
-      <div class="layui-row">
-        <div class="layui-col-xs8 layui-form-item">
-          <label class="layui-form-label">验证码</label>
-          <div class="layui-input-inline">
-            <input type="text" name="verifycode" required lay-verify="required|number" placeholder="手机验证码" autocomplete="off" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-col-xs4"> <button class="layui-btn layui-btn-radius" id="getverifycode">获取验证码</button></div>
       </div>
       <div class="layui-form-item" pane>
         <label class="layui-form-label">性别</label>
@@ -60,9 +47,9 @@
       <div class="layui-form-item" pane>
         <label class="layui-form-label">婚姻</label>
         <div class="layui-input-block">
-          <input type="radio" name="marry" value="1" title="未婚" checked>
-          <input type="radio" name="marry" value="2" title="已婚">
-          <input type="radio" name="marry" value="3" title="离异">
+          <input type="radio" name="marry" value="未婚" title="未婚" checked>
+          <input type="radio" name="marry" value="已婚" title="已婚">
+          <input type="radio" name="marry" value="离异" title="离异">
         </div>
       </div>
       <div class="layui-form-item">
@@ -74,7 +61,7 @@
       <div class="layui-form-item">
         <label class="layui-form-label">身份证</label>
         <div class="layui-input-block">
-          <input type="text" name="sfz" id="sfz" required lay-verify="required|number" lay-reqtext="请输入身份证号" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
+          <input type="text" name="sfz" id="sfz" required lay-verify="sfz" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">
@@ -85,15 +72,15 @@
         <label class="layui-form-label">学历</label>
         <div class="layui-input-block">
           <select name="education" lay-verify="required">
-            <option value="1">小学</option>
-            <option value="2">初中</option>
-            <option value="3">高中</option>
-            <option value="4">中专</option>
-            <option value="5">大专</option>
-            <option value="6">本科</option>
-            <option value="7">研究生</option>
-            <option value="8">博士</option>
-            <option value="9">保密</option>
+            <option value="小学">小学</option>
+            <option value="初中">初中</option>
+            <option value="高中">高中</option>
+            <option value="中专">中专</option>
+            <option value="大专">大专</option>
+            <option value="本科">本科</option>
+            <option value="研究生">研究生</option>
+            <option value="博士">博士</option>
+            <option value="保密">保密</option>
           </select>
         </div>
       </div>
@@ -101,13 +88,13 @@
         <label class="layui-form-label">月收入</label>
         <div class="layui-input-block">
           <select name="salary" lay-verify="required">
-            <option value="1">0~5000</option>
-            <option value="2">5000~10000</option>
-            <option value="3">10000～20000</option>
-            <option value="4">20000～50000</option>
-            <option value="5">50000～100000</option>
-            <option value="6">100000以上</option>
-            <option value="7">保密</option>
+            <option value="0~5000">0~5000</option>
+            <option value="5000~10000">5000~10000</option>
+            <option value="10000～20000">10000～20000</option>
+            <option value="20000～50000">20000～50000</option>
+            <option value="50000～100000">50000～100000</option>
+            <option value="100000以上">100000以上</option>
+            <option value="保密">保密</option>
           </select>
         </div>
       </div>
@@ -118,7 +105,7 @@
       </div>
       <div class="layui-form-item">
         <label class="layui-form-label">地区</label>
-        <div class="layui-input-block">
+        <div class="layui-input-block" style="font-size:0.8em">
           <div class="layui-col-xs4">
             <select name="province" id="province" lay-filter="province">
               <option value="">省份</option>
@@ -143,6 +130,21 @@
         </div>
       </div>
       <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-block">
+          <input type="text" name="phone" id="phone" required lay-verify="required|phone" lay-reqtext="请输入11位正确手机号" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-row">
+        <div class="layui-col-xs8 layui-form-item">
+          <label class="layui-form-label">验证码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="verifycode" id="verifycode" required lay-verify="required|number" placeholder="手机验证码" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-col-xs4"> <button class="layui-btn layui-btn-radius" id="getverifycode">获取验证码</button></div>
+      </div>
+      <div class="layui-form-item">
         <div class="layui-input-block">
           <button class="layui-btn layui-btn" lay-submit lay-filter="register">信息登记</button>
           <button type="reset" class="layui-btn layui-btn-normal">重置</button>
@@ -151,11 +153,12 @@
     </form>
   </div>
   <script>
-  layui.use(['form', 'laydate', 'laytpl', 'jquery'], function() {
+  layui.use(['form', 'layer', 'laydate', 'laytpl', 'jquery'], function() {
     var form = layui.form,
+      layer = layui.layer,
       laydate = layui.laydate,
       laytpl = layui.laytpl,
-      $ = layui.jquery;
+      $$ = layui.jquery;
 
     //日期
     laydate.render({
@@ -175,7 +178,7 @@
       'suffix': 'cm',
       'list': heightList
     };
-    var heightoptionsView = $('#heightoptions')[0];
+    var heightoptionsView = $$('#heightoptions')[0];
     laytpl(getTpl).render(heightoptionsData, function(html) {
       heightoptionsView.innerHTML = html;
     });
@@ -190,7 +193,7 @@
       'suffix': '年',
       'list': workyearsList
     };
-    var workyearoptionsView = $('#workyearoptions')[0]
+    var workyearoptionsView = $$('#workyearoptions')[0]
     laytpl(getTpl).render(workyearsData, function(html) {
       workyearoptionsView.innerHTML = html;
     });
@@ -198,17 +201,69 @@
     // 填充数据后重新渲染
     form.render();
 
+    // 自定义验证规则
+    form.verify({
+      sfz: [
+        /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+        '请输入正确的身份证号码'
+      ] 
+    });
+
     // 监听获取验证码按钮点击事件
-    $('#getverifycode').click(function() {
-      if ($('#phone').val() != '') {
-        console.log('获取验证码', $('#phone').val());
+    $$('#getverifycode').click(function() {
+      var phone = $$('#phone').val();
+      if (/^[1][3,4,5,7,8][0-9]{9}$/.test(phone)) {
+        getVerifyCode(phone).then(function(resp) {
+          var respData = JSON.parse(resp);
+          var result = respData.result;
+          if (result == false || result == '') {177
+            layer.msg('获取验证码失败，请输入11位正确手机号！', {
+              icon: 5, // 不开心的表情
+            });
+          } else {
+            layer.msg('获取验证码成功，请查看手机！', {
+              icon: 6, // 笑脸
+            });
+          }
+        }, function(error) {
+         layer.msg('获取验证码失败' + error, {
+            icon: 5,
+          });
+        });
+      } else {
+        layer.msg('请输入11位正确手机号', {
+          icon: 5,
+        });
       }
       return false;
     });
 
     // 监听提交
     form.on('submit(register)', function(data) {
-      console.log('data:', data.field);
+      var params = data.field;
+      checkVerifyCode(params.phone, params.verifycode).then(function(resp) {
+        var respData = JSON.parse(resp);
+        if (respData.result == true) {
+          $post('useradd', params).then(function(resp1) {
+            layer.msg('注册用户成功', {
+              icon: 6, // 笑脸
+            });
+          }, function(error) {
+            layer.msg('对不起，添加数据失败，请重试！', {
+              icon: 5, // 不开心的表情
+            });
+          });
+        } else {
+          layer.msg('对不起，验证码不对，请检查是否输入正确或重新获取！', {
+            icon: 5,
+          });
+        }
+      }, function(error) {
+        layer.msg('对不起，验证码不对，请检查是否输入正确或重新获取！', {
+          icon: 5,
+        });
+      });
+
       return false;
     });
   });
